@@ -131,32 +131,34 @@ download_2=st.button('Download csv')
 if download_2:
     'Download Started!'
 
-    csv = report.to_csv(index=False)
+    csv = mem_report.to_csv(index=False)
     b64 = base64.b64encode(csv.encode()).decode()  # some strings
     links= f'<a href="data:file/csv;base64,{b64}" download="mem_report.csv">Download</a>'
     st.markdown(links, unsafe_allow_html=True) 
  
   
 ##############################
+st.text('MEM mit Stationen')
+
 df_station_bm = df[['STATION_ID', 'MANAGEMENT_NAME']].dropna().drop_duplicates()
-df_mem = pd.merge(df_mem, df_station_bm, left_on='BAHNH', right_on='STATION_ID', how='left')
-mem_report = pd.pivot_table(df_mem[df_mem['EQUTXT'].str.contains("etter")], values='MEMNR', index=['MANAGEMENT_NAME', 'BFNAM',  'MSCHADEN'], columns=['Schadensdatum_Jahr'], fill_value=0, dropna=True, aggfunc='count')
-mem_report.reset_index(inplace=True)
-mem_report = mem_report[mem_report['MANAGEMENT_NAME'].isin(make_choice_bm)&mem_report['MSCHADEN'].isin(make_choice_schaden_mem)]
-mem_report =pd.concat([mem_report, mem_report.drop(['MANAGEMENT_NAME', 'BFNAM', 'MSCHADEN'], axis=1).sum(axis=1)], axis=1).rename(columns={0:'Total'})
-mem_report = mem_report.sort_values('Total', axis=0, ascending=False, inplace=False, kind='quicksort', na_position='last')
+df_mem_st = pd.merge(df_mem, df_station_bm, left_on='BAHNH', right_on='STATION_ID', how='left')
+mem_report_st = pd.pivot_table(df_mem_st[df_mem_st['EQUTXT'].str.contains("etter")], values='MEMNR', index=['MANAGEMENT_NAME', 'BFNAM',  'MSCHADEN'], columns=['Schadensdatum_Jahr'], fill_value=0, dropna=True, aggfunc='count')
+mem_report_st.reset_index(inplace=True)
+mem_report_st = mem_report_st[mem_report_st['MANAGEMENT_NAME'].isin(make_choice_bm)&mem_report_st['MSCHADEN'].isin(make_choice_schaden_mem)]
+mem_report_st =pd.concat([mem_report_st, mem_report_st.drop(['MANAGEMENT_NAME', 'BFNAM', 'MSCHADEN'], axis=1).sum(axis=1)], axis=1).rename(columns={0:'Total'})
+mem_report_st = mem_report_st.sort_values('Total', axis=0, ascending=False, inplace=False, kind='quicksort', na_position='last')
 #mem_report = mem_report[mem_report['MANAGEMENT_NAME'].isin(make_choice_bm)]
 #mem_report.loc['Total']= mem_report.drop(['MANAGEMENT_NAME', 'EQUTXT', 'Schadensdatum_Jahr'], axis=1).sum(axis=0)
 
 
-st.table(mem_report)
+st.table(mem_report_st)
 
 
 download_2=st.button('Download csv')
 if download_2:
     'Download Started!'
 
-    csv = report.to_csv(index=False)
+    csv = mem_report_st.to_csv(index=False)
     b64 = base64.b64encode(csv.encode()).decode()  # some strings
-    links= f'<a href="data:file/csv;base64,{b64}" download="mem_report.csv">Download</a>'
+    links= f'<a href="data:file/csv;base64,{b64}" download="mem_report_st.csv">Download</a>'
     st.markdown(links, unsafe_allow_html=True)
