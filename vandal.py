@@ -153,7 +153,7 @@ mem_report_st = mem_report_st.sort_values('Total', axis=0, ascending=False, inpl
 #mem_report.loc['Total']= mem_report.drop(['MANAGEMENT_NAME', 'EQUTXT', 'Schadensdatum_Jahr'], axis=1).sum(axis=0)
 
 
-st.table(mem_report_st)
+st.table(mem_report_st.head(10))
 
 if download_3:
     'Download Started!'
