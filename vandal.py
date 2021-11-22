@@ -115,7 +115,7 @@ else:
 
 df_station_bm = df[['STATION_ID', 'MANAGEMENT_NAME']].dropna().drop_duplicates()
 df_mem = pd.merge(df_mem, df_station_bm, left_on='BAHNH', right_on='STATION_ID', how='left')
-mem_report = pd.pivot_table(df_mem[df_mem['EQUTXT'].str.contains("etter")], values='MEMNR', index=['MANAGEMENT_NAME', 'EQUTXT', 'MSCHADEN'], columns=['Schadensdatum_Jahr'], fill_value=0, dropna=True, aggfunc='count')
+mem_report = pd.pivot_table(df_mem[df_mem['EQUTXT'].str.contains("etter")], values='MEMNR', index=['MANAGEMENT_NAME',  'MSCHADEN'], columns=['Schadensdatum_Jahr'], fill_value=0, dropna=True, aggfunc='count')
 mem_report.reset_index(inplace=True)
 mem_report = mem_report[mem_report['MANAGEMENT_NAME'].isin(make_choice_bm)&mem_report['MSCHADEN'].isin(make_choice_schaden_mem)]
 mem_report =pd.concat([mem_report, mem_report.drop(['MANAGEMENT_NAME', 'MSCHADEN'], axis=1).sum(axis=1)], axis=1).rename(columns={0:'Total'})
