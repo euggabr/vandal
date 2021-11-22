@@ -139,6 +139,14 @@ if download_2:
   
 ##############################
 st.text('MEM mit Stationen')
+download_3=st.button('Download csv')
+if download_3:
+    'Download Started!'
+
+    csv = mem_report_st.to_csv(index=False)
+    b64 = base64.b64encode(csv.encode()).decode()  # some strings
+    link_mem_st= f'<a href="data:file/csv;base64,{b64}" download="mem_report_st.csv">Download</a>'
+    st.markdown(link_mem_st, unsafe_allow_html=True)
 
 #df_station_bm = df[['STATION_ID', 'MANAGEMENT_NAME']].dropna().drop_duplicates()
 #df_mem_st = pd.merge(df_mem, df_station_bm, left_on='BAHNH', right_on='STATION_ID', how='left')
@@ -154,11 +162,3 @@ mem_report_st = mem_report_st.sort_values('Total', axis=0, ascending=False, inpl
 st.table(mem_report_st)
 
 
-download_3=st.button('Download csv')
-if download_3:
-    'Download Started!'
-
-    csv = mem_report_st.to_csv(index=False)
-    b64 = base64.b64encode(csv.encode()).decode()  # some strings
-    links= f'<a href="data:file/csv;base64,{b64}" download="mem_report_st.csv">Download</a>'
-    st.markdown(links, unsafe_allow_html=True)
