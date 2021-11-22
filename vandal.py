@@ -140,9 +140,9 @@ if download_2:
 ##############################
 st.text('MEM mit Stationen')
 
-df_station_bm = df[['STATION_ID', 'MANAGEMENT_NAME']].dropna().drop_duplicates()
-df_mem_st = pd.merge(df_mem, df_station_bm, left_on='BAHNH', right_on='STATION_ID', how='left')
-mem_report_st = pd.pivot_table(df_mem_st[df_mem_st['EQUTXT'].str.contains("etter")], values='MEMNR', index=['MANAGEMENT_NAME', 'BFNAM',  'MSCHADEN'], columns=['Schadensdatum_Jahr'], fill_value=0, dropna=True, aggfunc='count')
+#df_station_bm = df[['STATION_ID', 'MANAGEMENT_NAME']].dropna().drop_duplicates()
+#df_mem_st = pd.merge(df_mem, df_station_bm, left_on='BAHNH', right_on='STATION_ID', how='left')
+mem_report_st = pd.pivot_table(df_mem[df_mem['EQUTXT'].str.contains("etter")], values='MEMNR', index=['MANAGEMENT_NAME', 'BFNAM',  'MSCHADEN'], columns=['Schadensdatum_Jahr'], fill_value=0, dropna=True, aggfunc='count')
 mem_report_st.reset_index(inplace=True)
 mem_report_st = mem_report_st[mem_report_st['MANAGEMENT_NAME'].isin(make_choice_bm)&mem_report_st['MSCHADEN'].isin(make_choice_schaden_mem)]
 mem_report_st =pd.concat([mem_report_st, mem_report_st.drop(['MANAGEMENT_NAME', 'BFNAM', 'MSCHADEN'], axis=1).sum(axis=1)], axis=1).rename(columns={0:'Total'})
@@ -154,8 +154,8 @@ mem_report_st = mem_report_st.sort_values('Total', axis=0, ascending=False, inpl
 st.table(mem_report_st)
 
 
-download_2=st.button('Download csv')
-if download_2:
+download_3=st.button('Download csv')
+if download_3:
     'Download Started!'
 
     csv = mem_report_st.to_csv(index=False)
