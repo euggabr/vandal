@@ -127,7 +127,7 @@ mem_report = mem_report.sort_values('Total', axis=0, ascending=False, inplace=Fa
 st.table(mem_report)
 
 
-download_2=st.button('Download csv')
+download_2=st.button('Download csv mem mit st')
 if download_2:
     'Download Started!'
 
